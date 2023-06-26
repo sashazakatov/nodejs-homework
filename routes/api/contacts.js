@@ -1,6 +1,8 @@
 const express = require('express')
 const Joi = require('joi');
 
+const { HttpError } = require('../../helpers');
+
 const {
   getListContact,
   getContactById,
@@ -28,9 +30,7 @@ router.get('/:contactId', async (req, res, next) => {
     const { contactId } = req.params;
     const contactById = await getContactById(contactId);
     if(!contactById){
-      const err = new Error("Not found");
-      err.status = 400;
-      throw err;
+      throw HttpError({status: 400, message:"Not found"});
     }
     res.json(contactById);
   }
@@ -43,11 +43,8 @@ router.post('/', async (req, res, next) => {
   try{
     const { value, error } = schema.validate(req.body);
     if(error){
-      const err = new Error("missing required name field");
-      err.status = 400;
-      throw err;
+      throw HttpError({status: 400, message:"missing required name field"});
     }
-    console.log(error);
     const addedContact = await addContact(value);
     res.json(addedContact);
   }
@@ -61,9 +58,7 @@ router.delete('/:contactId', async (req, res, next) => {
     const { contactId } = req.params;
     const remoingContact = await removeContact(contactId);
     if(!remoingContact){
-      const err = new Error("Not found");
-      err.status = 404;
-      throw err;
+      throw HttpError({status: 404, message:"Not found"});
     }
     res.json({ message: "contact deleted" })
   }
@@ -74,17 +69,14 @@ router.delete('/:contactId', async (req, res, next) => {
 
 router.put('/:contactId', async (req, res, next) => {
   const { contactId } = req.params;
+  const { value, error } = schema.validate(req.body);
   try{
-    if(!req.body){
-      const err = new Error("missing fields");
-      err.status = 400;
-      throw err;
+    if(error){
+      throw HttpError({status: 400, message:"missing fields"});
     }
-    const updatedContact = await updateContact(contactId, req.body);
+    const updatedContact = await updateContact(contactId, value);
     if(!updatedContact){
-      const err = new Error("Not found");
-      err.status = 404;
-      throw err;
+      throw HttpError({status: 404, message:"Not found"});
     }
     res.json(updatedContact);
   }
@@ -92,5 +84,4 @@ router.put('/:contactId', async (req, res, next) => {
     next(err);
   }
 })
-
 module.exports = router

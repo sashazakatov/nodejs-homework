@@ -3,4 +3,6 @@ const HttpError = ({message, status}) => {
     error.status = status;
     return error;
 }
-module.exports = HttpError;
+module.exports = {
+    HttpError
+};
