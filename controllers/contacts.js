@@ -1,5 +1,5 @@
 const Joi = require('joi');
-const { HttpError } = require('../../helpers');
+const { HttpError } = require('../helpers');
 
 const {
   getListContact,
