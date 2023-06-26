@@ -7,7 +7,7 @@ const {
   removeContact,
   addContact,
   updateContact,
-} = require('../../models/contacts.js')
+} = require('../models/contacts.js')
 
 const schema = Joi.object({
     name: Joi.string().required(),
@@ -81,4 +81,5 @@ module.exports = {
     getById,
     addById,
     deleteById,
+    updateBuId,
 }
