@@ -1,7 +1,7 @@
 const decorator = (controller) => {
     const func = async (req, res, next) => {
         try{
-            await controller();
+            await controller(req, res, next);
         }
         catch(error){
             next(error)

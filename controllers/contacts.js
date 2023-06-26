@@ -52,8 +52,8 @@ const updateBuId = async (req, res, next) => {
 
 module.exports = {
     getAll : decorator(getAll),
-    getById,
-    addById,
-    deleteById,
-    updateBuId,
+    getById : decorator(getById),
+    addById : decorator(addById),
+    deleteById : decorator(deleteById),
+    updateBuId : decorator(updateBuId),
 }
