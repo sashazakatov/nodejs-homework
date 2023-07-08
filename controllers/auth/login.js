@@ -13,18 +13,20 @@ const login = async(req, res, next) => {
         throw HttpError({ status: 400, message: "Bad Request" });
     }
 
-    const user = await User.findOne({ email: value.email });
-    const password = user?.password ?? '';
+    const existingUser = await User.findOne({ email: value.email });
+    const password = existingUser?.password ?? '';
     const match = await bcrypt.compare(value.password, password);
 
-    if(!user || match){
+    if(!existingUser || !match){
         throw HttpError({ status: 401, message: "Email or password is wrong" })
     }
 
-    const token = await jwt.sign({ id: user.id }, SECRET_WORD, { expiresIn: '1d' });
+    const token = await jwt.sign({ id: existingUser.id }, SECRET_WORD, { expiresIn: '1d' });
+    
+    const user = await User.findByIdAndUpdate(existingUser.id, { token }, { new: true });
 
     res.json({
-        token,
+        token: user.token,
         user:{
             user: user.email,
             subscription: user.subscription,
