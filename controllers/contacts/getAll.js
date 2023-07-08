@@ -1,7 +1,8 @@
 const { Contact } = require('../../models');
 
 const getAll = async (req, res, next) => {
-    const result = await Contact.find();
+    // console.log(req.user._id);
+    const result = await Contact.find({ owner: req.user._id });
     res.json(result);
 }
 module.exports = getAll;
