@@ -10,4 +10,6 @@ router.post('/login', auth.login);
 
 router.patch('/logout', authorization, auth.logout);
 
+router.get('/current', authorization, auth.current);
+
 module.exports = router;
