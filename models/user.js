@@ -19,6 +19,9 @@ const UserSchema = new Schema({
       type: String,
       default: null,
     },
+},
+{
+  versionKey: false
 });
 
 const User = model('user', UserSchema);
