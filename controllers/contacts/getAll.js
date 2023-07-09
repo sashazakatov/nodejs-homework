@@ -9,6 +9,7 @@ const getAll = async (req, res, next) => {
     const endIndex = page * limit;
 
     const query = { owner: req.user._id };
+    
     if(favorite){
         query.favorite = favorite
     }

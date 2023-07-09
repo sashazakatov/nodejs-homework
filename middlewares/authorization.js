@@ -9,8 +9,8 @@ const authorization =  async (req, res, next) => {
 
     const [bearer, token] = authorization.split(' ');
 
-    if( bearer === 'Bearer'){
-        throw HttpError({ status: 401,  message: "Not authorized" });
+    if( bearer !== 'Bearer'){
+        next(HttpError({ status: 401,  message: "Not authorized" }));
     }
     
     try{
@@ -18,16 +18,14 @@ const authorization =  async (req, res, next) => {
         const user = await User.findById(id);
         
         if(!user) {
-            throw new Error();
+            next(HttpError({ status: 401,  message: "Not authorized" }))
         }
 
         req.user = user;
         next();
     }
-    catch (error){
-        error.message = "Not authorized";
-        error.status = 401;
-        next(error);
+    catch {
+        next(HttpError({ status: 401,  message: "Not authorized" }));
     }
 }
 
