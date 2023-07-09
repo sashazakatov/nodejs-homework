@@ -1,12 +1,13 @@
 const express = require('express')
 const { auth } = require('../../controllers')
-const { authorization } = require('../../middlewares');
+const { authorization, validateBody } = require('../../middlewares');
+const { usersSchemes } = require('../../schemes');
 
 const router = express.Router()
 
-router.post('/register', auth.registUser);
+router.post('/register', validateBody(usersSchemes.registerScheme), auth.registUser);
 
-router.post('/login', auth.login);
+router.post('/login', validateBody(usersSchemes.registerScheme), auth.login);
 
 router.patch('/logout', authorization, auth.logout);
 
