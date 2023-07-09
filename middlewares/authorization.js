@@ -9,7 +9,7 @@ const authorization =  async (req, res, next) => {
 
     const [bearer, token] = authorization.split(' ');
 
-    if(!bearer || !token){
+    if( bearer === 'Bearer'){
         throw HttpError({ status: 401,  message: "Not authorized" });
     }
     
