@@ -1,13 +1,7 @@
 const { Contact }  = require('../../models');
-const { HttpError } = require('../../helpers');
-const { contactSchemes } = require('../../schemes');
 
 const add = async (req, res, next) => {
-    const { value, error } = contactSchemes.contactsScheme.validate(req.body);
-    if(error){
-      throw HttpError({status: 400, message:"missing required name field"});
-    }
-    const resolt = await Contact.create(value);
+    const resolt = await Contact.create({ ...req.body, owner: req.user._id });
     res.json(resolt); 
 }
 
