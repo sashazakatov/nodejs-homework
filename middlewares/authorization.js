@@ -7,9 +7,13 @@ const { SECRET_WORD  } = process.env
 const authorization =  async (req, res, next) => {
     const { authorization } = req.headers;
 
+    if(!authorization){
+        next(HttpError({ status: 401,  message: "Not authorized" }));
+    }
+
     const [bearer, token] = authorization.split(' ');
 
-    if( bearer !== 'Bearer'){
+    if( bearer !== 'Bearer' || token === undefined ){
         next(HttpError({ status: 401,  message: "Not authorized" }));
     }
     
