@@ -15,4 +15,6 @@ router.patch('/logout', authorization, auth.logout);
 
 router.get('/current', authorization, auth.current);
 
+router.patch('/avatars', authorization, auth.updateAvatars);
+
 module.exports = router;
