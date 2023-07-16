@@ -3,13 +3,17 @@ const bcrypt = require('bcrypt');
 const { User } = require('../../models');
 const { HttpError } = require('../../helpers');
 
+const { usersSchemes } = require('../../schemes');
+
 const { SECRET_WORD } = process.env;
 
 const login = async(req, res, next) => {
 
-    const existingUser = await User.findOne({ email: req.body });
+    const { email, password: bodyPassword } = req.body;
+
+    const existingUser = await User.findOne({ email });
     const password = existingUser?.password ?? '';
-    const match = await bcrypt.compare(req.body.password, password);
+    const match = await bcrypt.compare(bodyPassword, password);
 
     if(!existingUser || !match){
         throw HttpError({ status: 401, message: "Email or password is wrong" })
