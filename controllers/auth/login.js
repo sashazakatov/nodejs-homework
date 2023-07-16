@@ -3,8 +3,6 @@ const bcrypt = require('bcrypt');
 const { User } = require('../../models');
 const { HttpError } = require('../../helpers');
 
-const { usersSchemes } = require('../../schemes');
-
 const { SECRET_WORD } = process.env;
 
 const login = async(req, res, next) => {
