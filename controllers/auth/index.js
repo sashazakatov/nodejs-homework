@@ -4,7 +4,8 @@ const logout = require('./logout');
 const current = require('./current');
 const updateSubscription = require('./updateSubscription');
 const updateAvatars = require('./updateAvatars');
-const verificationToken = require('./verificationToken');
+const verifyEmail = require('./verifyEmail');
+const resendVerifyEmail = require('./resendVerifyEmail');
 
 const { decorator } = require('../../helpers');
 
@@ -15,5 +16,6 @@ module.exports = {
     current: decorator(current),
     updateSubscription: decorator(updateSubscription),
     updateAvatars: decorator(updateAvatars),
-    verificationToken: decorator(verificationToken),
+    verifyEmail: decorator(verifyEmail),
+    resendVerifyEmail: decorator(resendVerifyEmail),
 }

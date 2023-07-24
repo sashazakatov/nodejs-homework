@@ -4,6 +4,8 @@ const shortid = require('shortid');
 const { User } = require('../../models')
 const { HttpError, sendEmail } = require('../../helpers');
 
+const { BASE_URL } = process.env;
+
 const registUser = async (req, res, next) => {
     const { email, password } = req.body;
 
@@ -22,8 +24,8 @@ const registUser = async (req, res, next) => {
 
     await sendEmail({
       to: email,
-      subject: 'Sending with SendGrid is Fun',
-      html: '<strong>and easy to do anywhere, even with Node.js</strong>',
+      subject: 'Verify email',
+      html: `<a target="_blank" href="${BASE_URL}/api/users/verify/${verificationCode}">Click verify email</a>`,
     });
 
     res.json({ user: {

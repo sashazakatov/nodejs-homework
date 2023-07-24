@@ -16,6 +16,9 @@ const login = async(req, res, next) => {
     if(!existingUser || !match){
         throw HttpError({ status: 401, message: "Email or password is wrong" })
     }
+    if(!existingUser.verify){
+        throw HttpError({status: 401, message: "Email isn't verify"});
+    }
 
     const token = await jwt.sign({ id: existingUser.id }, SECRET_WORD, { expiresIn: '1d' });
     

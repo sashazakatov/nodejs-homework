@@ -17,6 +17,8 @@ router.get('/current', authorization, auth.current);
 
 router.patch('/avatars', authorization, upload.single('avatars'), auth.updateAvatars);
 
-router.get('/users/verify/:verificationToken', auth.verificationToken);
+router.get('/verify/:verificationToken', auth.verifyEmail);
+
+router.post('/verify', validateBody(usersSchemes.emailScheme), auth.resendVerifyEmail);
 
 module.exports = router;
