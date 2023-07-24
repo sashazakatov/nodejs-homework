@@ -1,32 +1,34 @@
 const bcrypt = require('bcrypt');
 const gravatar = require('gravatar');
+const shortid = require('shortid');
 const { User } = require('../../models')
-const { HttpError } = require('../../helpers');
-
-const { usersSchemes } = require('../../schemes');
+const { HttpError, sendEmail } = require('../../helpers');
 
 const registUser = async (req, res, next) => {
-    const { error, value } = usersSchemes.registerScheme.validate(req.body);
+    const { email, password } = req.body;
 
-    const avatarURL = gravatar.url(value.email);
-
-    if(error){
-        throw HttpError({ status: 400,  message: "Bad Request"});
-    }
-
-    const existingUser = await User.findOne({ email: value.email });
-    if (existingUser) {
+    const user = await User.findOne({ email });
+    if (user) {
       throw HttpError({ status: 409, message: "Conflict" });
     }
 
     const salt = bcrypt.genSaltSync(10);
-    const hashPassword = bcrypt.hashSync(value.password, salt);
-    value.password = hashPassword;
+    const hashPassword = bcrypt.hashSync(password, salt);
 
-    const { email, subscription } = await User.create({...value, avatarURL});
+    const avatarURL = gravatar.url(email);
+    const verificationCode = shortid.generate()
+
+    const newUser = await User.create({...req.body, password:hashPassword, avatarURL, verificationCode});
+
+    await sendEmail({
+      to: email,
+      subject: 'Sending with SendGrid is Fun',
+      html: '<strong>and easy to do anywhere, even with Node.js</strong>',
+    });
+
     res.json({ user: {
-      email,
-      subscription,
+      email: newUser.email,
+      subscription: newUser.subscription,
     }});
 }
 

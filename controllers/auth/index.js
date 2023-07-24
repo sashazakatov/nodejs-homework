@@ -4,6 +4,7 @@ const logout = require('./logout');
 const current = require('./current');
 const updateSubscription = require('./updateSubscription');
 const updateAvatars = require('./updateAvatars');
+const verificationToken = require('./verificationToken');
 
 const { decorator } = require('../../helpers');
 
@@ -14,4 +15,5 @@ module.exports = {
     current: decorator(current),
     updateSubscription: decorator(updateSubscription),
     updateAvatars: decorator(updateAvatars),
+    verificationToken: decorator(verificationToken),
 }
